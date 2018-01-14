@@ -5,9 +5,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def index(request):
-    response = """Rango says hey there partner! </br>
-                    Perhaps you would like to check the <a href="/rango/about/">About page</a>?"""
-    return HttpResponse(response)
+    # Dictionary of Django template variable values
+    context_dict = {'boldmessage': 'Crunchy, creamy, cookie, candy, cupcake!'}
+
+    # Return a response to the request, specifying the template file and the template context dictionary
+    return render(request, 'rango/index.html', context=context_dict)
 
 def about(request):
     response = """Rango says this here is the about page! </br>
