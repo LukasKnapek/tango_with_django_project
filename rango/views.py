@@ -9,8 +9,10 @@ def index(request):
     # Query the database for all currently stored categories sorted by the number of likes (descending)
     # Pick the 5 most liked categories, or all, if less than five
     category_list = Category.objects.order_by('-likes')[:5]
+    page_list = Page.objects.order_by('-views')[:5]
     # Place the list of top liked categories to the context dictionary which will be handled to the template
-    context_dict = {'categories': category_list}
+    context_dict = {'categories': category_list,
+                    'pages': page_list}
 
     # Return a response to the request, specifying the template file and the template context dictionary
     return render(request, 'rango/index.html', context=context_dict)
