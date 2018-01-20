@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 from rango.models import Category, Page
-from rango.forms import CategoryForm
+from rango.forms import CategoryForm, PageForm
 
 def index(request):
     # Query the database for all currently stored categories sorted by the number of likes (descending)
@@ -64,7 +64,33 @@ def add_category(request):
     # the appropriate template with the form
     return render(request, 'rango/add_category.html', {'form': form})
 
+def add_page(request, category_name_slug):
+    try:
+        category = Category.objects.get(slug=category_name_slug)
+    except Category.DoesNotExist:
+        category = None
 
+    form = PageForm()
+
+    # Is the request POST, i.e. has the user submitted the form?
+    if request.method == 'POST':
+        form = PageForm(request.POST)
+
+        # We only save the form if it is valid, otherwise
+        # print out errors in terminal
+        if form.is_valid():
+            page = form.save(commit=False)
+            page.category = category
+            page.views = 0
+            page.save()
+            return show_category(request, category_name_slug)
+        else:
+            print(form.errors)
+
+    # If the request is not POST, it is GET and we display
+    # the appropriate template with the form
+    context_dict = {'form': form, 'category': category}
+    return render(request, 'rango/add_page.html', context_dict)
 
 
 
