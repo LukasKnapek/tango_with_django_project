@@ -1,14 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Rango</title>
-</head>
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
 
+{% block title_block %}
+    Rango - Add a Page
+{% endblock %}
+
+{% block body_block %}
 <body>
     {% if category %}
         <h1>Add a Page</h1>
         <div>
-            <form id="page_form" method="POST" action="/rango/category/{{ category.slug }}/add_page/">
+            <form id="page_form" method="POST" action="{% url 'add_page' category.slug %}">
                 {% csrf_token %}
                 {% for hidden in form.hidden_fields %}
                     {{ hidden }}
@@ -26,4 +28,4 @@
         A category by this name does not exist.
     {% endif %}
 </body>
-</html>
+{% endblock %}
