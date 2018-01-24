@@ -50,6 +50,7 @@ def show_category(request, category_name_slug):
 
     return render(request, 'rango/category.html', context_dict)
 
+@login_required
 def add_category(request):
     form = CategoryForm()
 
@@ -69,6 +70,7 @@ def add_category(request):
     # the appropriate template with the form
     return render(request, 'rango/add_category.html', {'form': form})
 
+@login_required
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
@@ -172,7 +174,7 @@ def user_login(request):
         else:
             # Incorrect credentials
             print ("Invalid login details: {0}, {1}".format(username, password))
-            return HttpResponse("Invalid login details supplied.")
+            return HttpResponse("Authentication failed: Incorrect username or password.")
 
     # Not a POST request, display login form
     else:
@@ -186,8 +188,7 @@ def user_logout(request):
 
 @login_required
 def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
-
+    return render(request, 'rango/restricted.html', {'logged_user': request.user.username})
 
 
 
