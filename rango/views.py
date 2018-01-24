@@ -2,10 +2,14 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from rango.models import Category, Page
 from rango.forms import CategoryForm, PageForm
 from rango.forms import UserForm, UserProfileForm
+from django.contrib.auth import authenticate, login, logout
+from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
+
 
 def index(request):
     # Query the database for all currently stored categories sorted by the number of likes (descending)
@@ -140,7 +144,49 @@ def register(request):
                    'profile_form': profile_form,
                    'registered': registered})
 
+def user_login(request):
 
+    # If the request is POST, get the credentials the user
+    # has entered
+    if request.method == 'POST':
+        # Get credentials from the login form
+        # Returns None if the values do not exist
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Use Django authentication to verify credentials
+        # If correct, the method returns the appropriate User object
+        user = authenticate(username=username, password=password)
+
+        # If we have a User object, the authentication was successful
+        if user:
+            # Verify the user is active (not disabled)
+            if user.is_active:
+                # If active, log the user in using Django built-in method
+                # and redirect him back to the home page
+                login(request, user)
+                return HttpResponseRedirect(reverse('index'))
+            else:
+                # Inactive account, no logging in
+                return HttpResponse("Your Rango account is disabled.")
+        else:
+            # Incorrect credentials
+            print ("Invalid login details: {0}, {1}".format(username, password))
+            return HttpResponse("Invalid login details supplied.")
+
+    # Not a POST request, display login form
+    else:
+        # Empty context dictionary
+        return render(request, 'rango/login.html', {})
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
+
+@login_required
+def restricted(request):
+    return HttpResponse("Since you're logged in, you can see this text!")
 
 
 
