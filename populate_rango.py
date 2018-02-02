@@ -34,7 +34,7 @@ def populate():
             "Other Frameworks": {"pages": other_pages, "views": 32, "likes": 16}}
 
     # Go through the categories dictionary, create the categories and add all of their pages to them
-    for cat, cat_data in cats.iteritems():
+    for cat, cat_data in cats.items():
         c = add_cat(cat, cat_data["views"], cat_data["likes"])
         for p in cat_data["pages"]:
             add_page(c, p["title"], p["url"], p["view"])

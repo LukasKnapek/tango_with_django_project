@@ -11,7 +11,7 @@
         Rango says: <strong>thank you for registering!</strong><br/>
         <a href="{% url 'index' %}">Return to the homepage.</a><br/>
     {% else %}
-        Rango says <strong>register here!</strong><br/>
+        Rango says <strong>register here!</strong><br />
         <!-- enctype - multipart to ensure proper image upload -->
         <form id="user_form" method="POST" action="{% url 'register' %}"
               enctype="multipart/form-data">
