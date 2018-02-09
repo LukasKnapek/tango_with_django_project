@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rango',
+    'registration',
 ]
 
 MIDDLEWARE = [
@@ -131,4 +132,31 @@ MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
 # Custom URLs
-LOGIN_URL = '/rango/login/'
+LOGIN_URL = '/accounts/login/'
+
+# Redux authentication variables
+REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+# Where users are redirected after logging in
+LOGIN_REDIRECT_URL = '/rango/'
+# Where users are redirected if they try to access pages requiring
+# authentication while not logged in
+LOGIN_URL = '/accounts/login/'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
