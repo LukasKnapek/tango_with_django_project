@@ -66,6 +66,7 @@ def show_category(request, category_name_slug):
 @login_required
 def add_category(request):
     form = CategoryForm()
+    context_dict = {}
 
     # Is the request POST, i.e. has the user submitted the form?
     if request.method == 'POST':
@@ -79,9 +80,12 @@ def add_category(request):
         else:
             print(form.errors)
 
+    context_dict["form"] = form
+    print(type(context_dict))
+
     # If the request is not POST, it is GET and we display
     # the appropriate template with the form
-    return render(request, 'rango/add_category.html', {'form': form})
+    return render(request, 'rango/add_category.html', context_dict)
 
 @login_required
 def add_page(request, category_name_slug):
